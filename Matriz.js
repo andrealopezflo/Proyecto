@@ -13,6 +13,8 @@ function Matriz(){
         indices de 0 - 7
         0 negro
         1 blanco
+
+        https://www.luisespino.com/temp/games/reversi/random.php?turno=1&estado=2222222222222222222222222222221022222201222222222222222222222222222222
     */
 
     this.generateMatriz();
@@ -20,7 +22,7 @@ function Matriz(){
 
 Matriz.prototype.generateMatriz = function() {
     //var recibe  = "22222222 22222222 22222222 22210222 22201222 22222222 22222222 22222222"
-    var recibe  = "2222222222222222222222222221022222201222222222222222222222222222"
+    var recibe  = $('input:text[name=estado]').val();
     
     //var recibe  = "2222222222210222222101122221022222110222212202221222022222220222"
     //             1234567812345678123456781234567812345678123456781234567812345678
