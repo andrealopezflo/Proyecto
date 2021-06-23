@@ -14,8 +14,22 @@
         currentPlayer = 1;
         board = new Board(players);
 
+        var turnoac = getParameterByName('turno');
+        var estadoac = getParameterByName('estado');
+        
+        console.log(turnoac);
+        console.log(estadoac);
+
         renderBoard(board.board);
     }
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
 
     function renderBoard(board) {
         for (var y = 0; y < board.length; ++y) {
