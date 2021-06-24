@@ -2,10 +2,10 @@ function Board(players, existentBoard) {
     this.size = 8;
     this.players = players;
   
-    this.startBoard(existentBoard);
+    this.initialBoard(existentBoard);
 }
 
-Board.prototype.startBoard = function(existentBoard) {
+Board.prototype.initialBoard = function(existentBoard) {
     if(existentBoard) {
         this.board = existentBoard;
     } else {
@@ -14,7 +14,7 @@ Board.prototype.startBoard = function(existentBoard) {
     }
 }
 
-Board.prototype.copy = function() {
+Board.prototype.copyBoard = function() {
     var tempPlayers = [];
     for (var i = this.players.length - 1; i >= 0; i--) {
       tempPlayers[i] = new Player(this.players[i].name, this.players[i].number, this.players[i].isIa);
@@ -220,7 +220,7 @@ Board.prototype.searchDownRight = function(x, y, player) {
     return [];
 }
 
-Board.prototype.getOpponentPieces = function(x, y, player) {
+Board.prototype.getOpponentPosition = function(x, y, player) {
     var pieces = [];
 
     if(this.board[x][y]) {
@@ -229,18 +229,25 @@ Board.prototype.getOpponentPieces = function(x, y, player) {
 
     var up = this.searchUp(x, y, player);
     pieces = pieces.concat(up ? up : []);
+
     var down = this.searchDown(x, y, player);
     pieces = pieces.concat(down ? down : []);
+    
     var left = this.searchLeft(x, y, player);
     pieces = pieces.concat(left ? left : []);
+    
     var right = this.searchRight(x, y, player);
     pieces = pieces.concat(right ? right : []);
+    
     var upLeft = this.searchUpLeft(x, y, player);
     pieces = pieces.concat(upLeft ? upLeft : []);
+    
     var downLeft = this.searchDownLeft(x, y, player);
     pieces = pieces.concat(downLeft ? downLeft : []);
+    
     var upRight = this.searchUpRight(x, y, player);
     pieces = pieces.concat(upRight ? upRight : []);
+    
     var downRight = this.searchDownRight(x, y, player);
     pieces = pieces.concat(downRight ? downRight : []);
     
@@ -262,7 +269,7 @@ Board.prototype.getPlayer = function(actualPlayer, opp) {
 Board.prototype.validMove = function(x, y, actualPlayer) {
     var player = this.getPlayer(actualPlayer);
 
-    return this.getOpponentPieces(x, y, player).length !== 0;
+    return this.getOpponentPosition(x, y, player).length !== 0;
 }
 
 Board.prototype.getAllValidMoves = function(actualPlayer) {
@@ -283,7 +290,7 @@ Board.prototype.shift = function(x, y, actualPlayer) {
     var player = this.getPlayer(actualPlayer);
     var otherPlayer = this.getPlayer(actualPlayer, true);
 
-    var pieces = this.getOpponentPieces(x, y, player)
+    var pieces = this.getOpponentPosition(x, y, player)
 
     for (var i = 0; i < pieces.length; i++) {
         var piece = pieces[i];

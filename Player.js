@@ -5,10 +5,10 @@ function Player(name, number, isIa) {
     this.color = number === 0 ? "black" : "white";
 
     if(this.isIa){
-        this.IA = new IA(this.number);
+        this.MiniMax = new MiniMax(this.number);
     }
 }
 
 Player.prototype.getMove = function(board) {
-    return this.IA.move(board);
+    return this.MiniMax.move(board);
 }
