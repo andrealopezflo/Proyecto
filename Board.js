@@ -2,20 +2,7 @@ function Board(players, existentBoard) {
     this.size = 8;
     this.players = players;
   
-    this.generateBoard();
     this.startBoard(existentBoard);
-}
-
-Board.prototype.generateBoard = function() {
-    var board = [];
-
-    for (var x = 0; x < this.size; x++) {
-        board[x] = [];
-        for (var y = 0; y < this.size; y++) {
-            board[x][y] = null;
-        }
-    }
-    this.board = board;
 }
 
 Board.prototype.startBoard = function(existentBoard) {
@@ -27,6 +14,21 @@ Board.prototype.startBoard = function(existentBoard) {
     }
 }
 
+Board.prototype.copy = function() {
+    var tempPlayers = [];
+    for (var i = this.players.length - 1; i >= 0; i--) {
+      tempPlayers[i] = new Player(this.players[i].name, this.players[i].number, this.players[i].isIa);
+    };
+
+    var tempBoard = [];
+    for (var i = 0; i < this.board.length; i++) {
+        tempBoard[i] = this.board[i].slice();
+    }
+    
+    return new Board(tempPlayers, tempBoard);
+}
+
+//BUSCANDO ARRIBA
 Board.prototype.searchUp = function(x, y, player) {
     var pieces = [];
 
@@ -49,6 +51,7 @@ Board.prototype.searchUp = function(x, y, player) {
     return [];
 }
 
+//BUSCANDO ABAJO
 Board.prototype.searchDown = function(x, y, player) {
     var pieces = [];
 
@@ -61,7 +64,6 @@ Board.prototype.searchDown = function(x, y, player) {
             if(pieces.length === 0){
                 return false;
             } else {
-                //console.log("currentSquare", x, y, initialX, initialY, this.board[x][y]);
                 return pieces;
             }
         }
@@ -72,6 +74,7 @@ Board.prototype.searchDown = function(x, y, player) {
     return [];
 }
 
+//BUSCANDO IZQUIERDA
 Board.prototype.searchLeft = function(x, y, player) {
     var pieces = [];
 
@@ -94,6 +97,7 @@ Board.prototype.searchLeft = function(x, y, player) {
     return [];
 }
 
+//BUSCANDO DERECHA
 Board.prototype.searchRight = function(x, y, player) {
     var pieces = [];
 
@@ -116,6 +120,7 @@ Board.prototype.searchRight = function(x, y, player) {
     return [];
 }
 
+//BUSCANDO ARRIBA IZQUIERDA
 Board.prototype.searchUpLeft = function(x, y, player) {
     var pieces = [];
 
@@ -140,6 +145,7 @@ Board.prototype.searchUpLeft = function(x, y, player) {
     return [];
 }
 
+//BUSCANDO ARRIBA DERECHA
 Board.prototype.searchUpRight = function(x, y, player) {
     var pieces = [];
 
@@ -164,6 +170,7 @@ Board.prototype.searchUpRight = function(x, y, player) {
     return [];
 }
 
+//BUSCANDO ABAJO IZQUIERDA
 Board.prototype.searchDownLeft = function(x, y, player) {
     var pieces = [];
 
@@ -188,6 +195,7 @@ Board.prototype.searchDownLeft = function(x, y, player) {
     return [];
 }
 
+//BUSCANDO ABAJO DERECHA
 Board.prototype.searchDownRight = function(x, y, player) {
     var pieces = [];
 
@@ -239,32 +247,30 @@ Board.prototype.getOpponentPieces = function(x, y, player) {
     return pieces;
 }
 
-Board.prototype.copy = function() {
-    var tempPlayers = [];
-    for (var i = this.players.length - 1; i >= 0; i--) {
-      tempPlayers[i] = new Player(this.players[i].name, this.players[i].number, this.players[i].isIa);
-    };
+Board.prototype.getPlayer = function(actualPlayer, opp) {
+    var player;
 
-    var tempBoard = [];
-    for (var i = 0; i < this.board.length; i++) {
-        tempBoard[i] = this.board[i].slice();
+    if(!opp) {
+        player = this.players[actualPlayer]
+    } else {
+        player = this.players[actualPlayer ? 0 : 1]
     }
-    
-    return new Board(tempPlayers, tempBoard);
-  }
 
-Board.prototype.validMove = function(x, y, currentPlayer) {
-    var player = this.getPlayer(currentPlayer);
+    return player;
+}
+
+Board.prototype.validMove = function(x, y, actualPlayer) {
+    var player = this.getPlayer(actualPlayer);
 
     return this.getOpponentPieces(x, y, player).length !== 0;
 }
 
-Board.prototype.getAllValidMoves = function(currentPlayer) {
+Board.prototype.getAllValidMoves = function(actualPlayer) {
     var validMoves = [];
 
     for (var x = 0; x < this.size; x++) {
         for (var y = 0; y < this.size; y++) {
-            if(this.validMove(x, y, currentPlayer)) {
+            if(this.validMove(x, y, actualPlayer)) {
                 validMoves.push({x: x, y: y});
             }
         }
@@ -273,9 +279,9 @@ Board.prototype.getAllValidMoves = function(currentPlayer) {
     return validMoves;
 }
 
-Board.prototype.flip = function(x, y, currentPlayer) {
-    var player = this.getPlayer(currentPlayer);
-    var otherPlayer = this.getPlayer(currentPlayer, true);
+Board.prototype.shift = function(x, y, actualPlayer) {
+    var player = this.getPlayer(actualPlayer);
+    var otherPlayer = this.getPlayer(actualPlayer, true);
 
     var pieces = this.getOpponentPieces(x, y, player)
 
@@ -288,16 +294,4 @@ Board.prototype.flip = function(x, y, currentPlayer) {
 
     player.qtdPieces += pieces.length + 1;
     otherPlayer.qtdPieces -= pieces.length;
-}
-
-Board.prototype.getPlayer = function(currentPlayer, opp) {
-    var player;
-
-    if(!opp) {
-        player = this.players[currentPlayer]
-    } else {
-        player = this.players[currentPlayer ? 0 : 1]
-    }
-
-    return player;
 }
