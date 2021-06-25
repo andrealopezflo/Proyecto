@@ -5,9 +5,7 @@ class MiniMax {
     }
 
     move(board) {
-        this.visits = 0;
         var res = this.minimax(board, 0, this.actualPlayer, this.maxDepth, -100000, 100000);
-        console.log("Total nodes: " + this.visits);
         return res;
     }
 
@@ -22,7 +20,6 @@ class MiniMax {
     }
 
     minimax(board, depth, actualPlayer, maxDepth, alpha, beta) {
-        this.visits++;
         var newBoard, score, move, bestMove;
         var moves = board.getAllValidMoves(actualPlayer);
 

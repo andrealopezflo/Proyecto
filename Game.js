@@ -30,11 +30,8 @@ function play() {
     if(actualPlayer === 1){
         if(players[actualPlayer].isIa) {
             setTimeout(function(){
-                var t0 = performance.now()
                 try {
                     var move = players[actualPlayer].getMove(board); 
-                    var t1 = performance.now()
-                    console.log("IA process time " + (t1 - t0) + " milliseconds.");
                     console.log("Movimiento a realizar " + move.x + ", " + move.y) 
 
                     let body = document.getElementsByTagName("body")[0];
