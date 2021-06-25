@@ -9,6 +9,7 @@ class Player {
             this.MiniMax = new MiniMax(this.number);
         }
     }
+    
     getMove(board) {
         return this.MiniMax.move(board);
     }

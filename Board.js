@@ -5,6 +5,7 @@ class Board {
 
         this.initialBoard(existentBoard);
     }
+
     initialBoard(existentBoard) {
         if (existentBoard) {
             this.board = existentBoard;
@@ -13,6 +14,7 @@ class Board {
             this.board = matriz.matriz;
         }
     }
+
     copyBoard() {
         var tempPlayers = [];
         for (var i = this.players.length - 1; i >= 0; i--) {
@@ -26,6 +28,7 @@ class Board {
 
         return new Board(tempPlayers, tempBoard);
     }
+
     //BUSCANDO ARRIBA
     searchUp(x, y, player) {
         var pieces = [];
@@ -48,6 +51,7 @@ class Board {
 
         return [];
     }
+
     //BUSCANDO ABAJO
     searchDown(x, y, player) {
         var pieces = [];
@@ -70,6 +74,7 @@ class Board {
 
         return [];
     }
+
     //BUSCANDO IZQUIERDA
     searchLeft(x, y, player) {
         var pieces = [];
@@ -92,6 +97,7 @@ class Board {
 
         return [];
     }
+
     //BUSCANDO DERECHA
     searchRight(x, y, player) {
         var pieces = [];
@@ -114,6 +120,7 @@ class Board {
 
         return [];
     }
+
     //BUSCANDO ARRIBA IZQUIERDA
     searchUpLeft(x, y, player) {
         var pieces = [];
@@ -138,6 +145,7 @@ class Board {
 
         return [];
     }
+
     //BUSCANDO ARRIBA DERECHA
     searchUpRight(x, y, player) {
         var pieces = [];
@@ -162,6 +170,7 @@ class Board {
 
         return [];
     }
+
     //BUSCANDO ABAJO IZQUIERDA
     searchDownLeft(x, y, player) {
         var pieces = [];
@@ -186,6 +195,7 @@ class Board {
 
         return [];
     }
+    
     //BUSCANDO ABAJO DERECHA
     searchDownRight(x, y, player) {
         var pieces = [];
@@ -210,6 +220,7 @@ class Board {
 
         return [];
     }
+    
     getOpponentPosition(x, y, player) {
         var pieces = [];
 
@@ -243,6 +254,7 @@ class Board {
 
         return pieces;
     }
+    
     getPlayer(actualPlayer, opp) {
         var player;
 
@@ -254,11 +266,13 @@ class Board {
 
         return player;
     }
+    
     validMove(x, y, actualPlayer) {
         var player = this.getPlayer(actualPlayer);
 
         return this.getOpponentPosition(x, y, player).length !== 0;
     }
+    
     getAllValidMoves(actualPlayer) {
         var validMoves = [];
 
@@ -272,6 +286,7 @@ class Board {
 
         return validMoves;
     }
+    
     shift(x, y, actualPlayer) {
         var player = this.getPlayer(actualPlayer);
         var otherPlayer = this.getPlayer(actualPlayer, true);
@@ -289,18 +304,3 @@ class Board {
         otherPlayer.qtdPieces -= pieces.length;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

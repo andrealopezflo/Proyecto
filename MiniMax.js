@@ -3,12 +3,24 @@ class MiniMax {
         this.actualPlayer = actualPlayer;
         this.maxDepth = 5;
     }
+
     move(board) {
         this.visits = 0;
         var res = this.minimax(board, 0, this.actualPlayer, this.maxDepth, -100000, 100000);
         console.log("Total nodes: " + this.visits);
         return res;
     }
+
+    mobility(board, actualPlayer) {
+        var aiMoves = board.getAllValidMoves(actualPlayer).length;
+        var oppMoves = board.getAllValidMoves(actualPlayer ? 0 : 1).length;
+        return Math.ceil((oppMoves + aiMoves) === 0 ? 0 : 100 * ((aiMoves - oppMoves) / (aiMoves + oppMoves)));
+    }
+
+    doMove(board, move, actualPlayer) {
+        board.shift(move.x, move.y, actualPlayer);
+    }
+
     minimax(board, depth, actualPlayer, maxDepth, alpha, beta) {
         this.visits++;
         var newBoard, score, move, bestMove;
@@ -56,17 +68,4 @@ class MiniMax {
             return beta;
         }
     }
-    doMove(board, move, actualPlayer) {
-        board.shift(move.x, move.y, actualPlayer);
-    }
-    mobility(board, actualPlayer) {
-        var aiMoves = board.getAllValidMoves(actualPlayer).length;
-        var oppMoves = board.getAllValidMoves(actualPlayer ? 0 : 1).length;
-        return Math.ceil((oppMoves + aiMoves) === 0 ? 0 : 100 * ((aiMoves - oppMoves) / (aiMoves + oppMoves)));
-    }
 }
-  
-
-
-
-  

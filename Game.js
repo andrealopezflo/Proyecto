@@ -12,21 +12,10 @@ function startGame() {
     actualPlayer = 1;
     board = new Board(players);
 
-    var turnoac = getParameterByName('turno');
-    var estadoac = getParameterByName('estado');
-    
-    console.log(turnoac);
-    console.log(estadoac);
-
     renderBoard(board.board);
 }
 
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-    results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
+
 
 function renderBoard(board) {
     for (var y = 0; y < board.length; ++y) {
@@ -49,7 +38,7 @@ function play() {
                     console.log("Movimiento a realizar " + move.x + ", " + move.y) 
 
                     let body = document.getElementsByTagName("body")[0];
-                    body.innerHTML = "53";
+                    body.innerHTML = move.y + "" + move.x;
 
                     //document.getElementById("log").innerHTML= move.y + "" + move.x;                    
                 
