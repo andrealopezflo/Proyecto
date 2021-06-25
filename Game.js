@@ -49,7 +49,7 @@ function play() {
                     console.log("Movimiento a realizar " + move.x + ", " + move.y) 
 
                     let body = document.getElementsByTagName("body")[0];
-                    body.innerHTML = "35";
+                    body.innerHTML = "53";
 
                     //document.getElementById("log").innerHTML= move.y + "" + move.x;                    
                 
