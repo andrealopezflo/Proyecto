@@ -1,304 +1,306 @@
-function Board(players, existentBoard) {
-    this.size = 8;
-    this.players = players;
-  
-    this.initialBoard(existentBoard);
-}
+class Board {
+    constructor(players, existentBoard) {
+        this.size = 8;
+        this.players = players;
 
-Board.prototype.initialBoard = function(existentBoard) {
-    if(existentBoard) {
-        this.board = existentBoard;
-    } else {
-        var matriz = new Matriz();
-        this.board = matriz.matriz;
+        this.initialBoard(existentBoard);
     }
-}
-
-Board.prototype.copyBoard = function() {
-    var tempPlayers = [];
-    for (var i = this.players.length - 1; i >= 0; i--) {
-      tempPlayers[i] = new Player(this.players[i].name, this.players[i].number, this.players[i].isIa);
-    };
-
-    var tempBoard = [];
-    for (var i = 0; i < this.board.length; i++) {
-        tempBoard[i] = this.board[i].slice();
+    initialBoard(existentBoard) {
+        if (existentBoard) {
+            this.board = existentBoard;
+        } else {
+            var matriz = new Matriz();
+            this.board = matriz.matriz;
+        }
     }
-    
-    return new Board(tempPlayers, tempBoard);
-}
+    copyBoard() {
+        var tempPlayers = [];
+        for (var i = this.players.length - 1; i >= 0; i--) {
+            tempPlayers[i] = new Player(this.players[i].name, this.players[i].number, this.players[i].isIa);
+        };
 
-//BUSCANDO ARRIBA
-Board.prototype.searchUp = function(x, y, player) {
-    var pieces = [];
+        var tempBoard = [];
+        for (var i = 0; i < this.board.length; i++) {
+            tempBoard[i] = this.board[i].slice();
+        }
 
-    y--;
-    while(y >= 0){
-        if(!this.board[x][y]){
-            return false;
-        }
-        if(this.board[x][y] === player.color){
-            if(pieces.length === 0){
-                return false;
-            } else {
-                return pieces;
-            }
-        }
-        pieces.push({x: x, y: y});
+        return new Board(tempPlayers, tempBoard);
+    }
+    //BUSCANDO ARRIBA
+    searchUp(x, y, player) {
+        var pieces = [];
+
         y--;
-    }
-
-    return [];
-}
-
-//BUSCANDO ABAJO
-Board.prototype.searchDown = function(x, y, player) {
-    var pieces = [];
-
-    y++;
-    while(y < this.size){
-        if(!this.board[x][y]){
-            return false;
-        }
-        if(this.board[x][y] === player.color){
-            if(pieces.length === 0){
+        while (y >= 0) {
+            if (!this.board[x][y]) {
                 return false;
-            } else {
-                return pieces;
             }
-        }
-        pieces.push({x: x, y: y});
-        y++;
-    }
-    
-    return [];
-}
-
-//BUSCANDO IZQUIERDA
-Board.prototype.searchLeft = function(x, y, player) {
-    var pieces = [];
-
-    x--;
-    while(x >= 0){
-        if(!this.board[x][y]){
-            return false;
-        }
-        if(this.board[x][y] === player.color){
-            if(pieces.length === 0){
-                return false;
-            } else {
-                return pieces;
+            if (this.board[x][y] === player.color) {
+                if (pieces.length === 0) {
+                    return false;
+                } else {
+                    return pieces;
+                }
             }
+            pieces.push({ x: x, y: y });
+            y--;
         }
-        pieces.push({x: x, y: y});
-        x--;
-    }
 
-    return [];
-}
-
-//BUSCANDO DERECHA
-Board.prototype.searchRight = function(x, y, player) {
-    var pieces = [];
-
-    x++;
-    while(x < this.size){
-        if(!this.board[x][y]){
-            return false;
-        }
-        if(this.board[x][y] === player.color){
-            if(pieces.length === 0){
-                return false;
-            } else {
-                return pieces;
-            }
-        }
-        pieces.push({x: x, y: y});
-        x++;
-    }
-
-    return [];
-}
-
-//BUSCANDO ARRIBA IZQUIERDA
-Board.prototype.searchUpLeft = function(x, y, player) {
-    var pieces = [];
-
-    x--;
-    y--;
-    while(x >= 0 && y >= 0){
-        if(!this.board[x][y]){
-            return false;
-        }
-        if(this.board[x][y] === player.color){
-            if(pieces.length === 0){
-                return false;
-            } else {
-                return pieces;
-            }
-        }
-        pieces.push({x: x, y: y});
-        x--;
-        y--;
-    }
-
-    return [];
-}
-
-//BUSCANDO ARRIBA DERECHA
-Board.prototype.searchUpRight = function(x, y, player) {
-    var pieces = [];
-
-    x++;
-    y--;
-    while(x < this.size && y >= 0){
-        if(!this.board[x][y]){
-            return false;
-        }
-        if(this.board[x][y] === player.color){
-            if(pieces.length === 0){
-                return false;
-            } else {
-                return pieces;
-            }
-        }
-        pieces.push({x: x, y: y});
-        x++;
-        y--;
-    }
-
-    return [];
-}
-
-//BUSCANDO ABAJO IZQUIERDA
-Board.prototype.searchDownLeft = function(x, y, player) {
-    var pieces = [];
-
-    x--;
-    y++;
-    while(x >= 0 && y < this.size){
-        if(!this.board[x][y]){
-            return false;
-        }
-        if(this.board[x][y] === player.color){
-            if(pieces.length === 0){
-                return false;
-            } else {
-                return pieces;
-            }
-        }
-        pieces.push({x: x, y: y});
-        x--;
-        y++;
-    }
-
-    return [];
-}
-
-//BUSCANDO ABAJO DERECHA
-Board.prototype.searchDownRight = function(x, y, player) {
-    var pieces = [];
-
-    x++;
-    y++;
-    while(x < this.size && y < this.size){
-        if(!this.board[x][y]){
-            return false;
-        }
-        if(this.board[x][y] === player.color){
-            if(pieces.length === 0){
-                return false;
-            } else {
-                return pieces;
-            }
-        }
-        pieces.push({x: x, y: y});
-        x++;
-        y++;
-    }
-
-    return [];
-}
-
-Board.prototype.getOpponentPosition = function(x, y, player) {
-    var pieces = [];
-
-    if(this.board[x][y]) {
         return [];
     }
+    //BUSCANDO ABAJO
+    searchDown(x, y, player) {
+        var pieces = [];
 
-    var up = this.searchUp(x, y, player);
-    pieces = pieces.concat(up ? up : []);
+        y++;
+        while (y < this.size) {
+            if (!this.board[x][y]) {
+                return false;
+            }
+            if (this.board[x][y] === player.color) {
+                if (pieces.length === 0) {
+                    return false;
+                } else {
+                    return pieces;
+                }
+            }
+            pieces.push({ x: x, y: y });
+            y++;
+        }
 
-    var down = this.searchDown(x, y, player);
-    pieces = pieces.concat(down ? down : []);
-    
-    var left = this.searchLeft(x, y, player);
-    pieces = pieces.concat(left ? left : []);
-    
-    var right = this.searchRight(x, y, player);
-    pieces = pieces.concat(right ? right : []);
-    
-    var upLeft = this.searchUpLeft(x, y, player);
-    pieces = pieces.concat(upLeft ? upLeft : []);
-    
-    var downLeft = this.searchDownLeft(x, y, player);
-    pieces = pieces.concat(downLeft ? downLeft : []);
-    
-    var upRight = this.searchUpRight(x, y, player);
-    pieces = pieces.concat(upRight ? upRight : []);
-    
-    var downRight = this.searchDownRight(x, y, player);
-    pieces = pieces.concat(downRight ? downRight : []);
-    
-    return pieces;
-}
-
-Board.prototype.getPlayer = function(actualPlayer, opp) {
-    var player;
-
-    if(!opp) {
-        player = this.players[actualPlayer]
-    } else {
-        player = this.players[actualPlayer ? 0 : 1]
+        return [];
     }
+    //BUSCANDO IZQUIERDA
+    searchLeft(x, y, player) {
+        var pieces = [];
 
-    return player;
-}
+        x--;
+        while (x >= 0) {
+            if (!this.board[x][y]) {
+                return false;
+            }
+            if (this.board[x][y] === player.color) {
+                if (pieces.length === 0) {
+                    return false;
+                } else {
+                    return pieces;
+                }
+            }
+            pieces.push({ x: x, y: y });
+            x--;
+        }
 
-Board.prototype.validMove = function(x, y, actualPlayer) {
-    var player = this.getPlayer(actualPlayer);
+        return [];
+    }
+    //BUSCANDO DERECHA
+    searchRight(x, y, player) {
+        var pieces = [];
 
-    return this.getOpponentPosition(x, y, player).length !== 0;
-}
+        x++;
+        while (x < this.size) {
+            if (!this.board[x][y]) {
+                return false;
+            }
+            if (this.board[x][y] === player.color) {
+                if (pieces.length === 0) {
+                    return false;
+                } else {
+                    return pieces;
+                }
+            }
+            pieces.push({ x: x, y: y });
+            x++;
+        }
 
-Board.prototype.getAllValidMoves = function(actualPlayer) {
-    var validMoves = [];
+        return [];
+    }
+    //BUSCANDO ARRIBA IZQUIERDA
+    searchUpLeft(x, y, player) {
+        var pieces = [];
 
-    for (var x = 0; x < this.size; x++) {
-        for (var y = 0; y < this.size; y++) {
-            if(this.validMove(x, y, actualPlayer)) {
-                validMoves.push({x: x, y: y});
+        x--;
+        y--;
+        while (x >= 0 && y >= 0) {
+            if (!this.board[x][y]) {
+                return false;
+            }
+            if (this.board[x][y] === player.color) {
+                if (pieces.length === 0) {
+                    return false;
+                } else {
+                    return pieces;
+                }
+            }
+            pieces.push({ x: x, y: y });
+            x--;
+            y--;
+        }
+
+        return [];
+    }
+    //BUSCANDO ARRIBA DERECHA
+    searchUpRight(x, y, player) {
+        var pieces = [];
+
+        x++;
+        y--;
+        while (x < this.size && y >= 0) {
+            if (!this.board[x][y]) {
+                return false;
+            }
+            if (this.board[x][y] === player.color) {
+                if (pieces.length === 0) {
+                    return false;
+                } else {
+                    return pieces;
+                }
+            }
+            pieces.push({ x: x, y: y });
+            x++;
+            y--;
+        }
+
+        return [];
+    }
+    //BUSCANDO ABAJO IZQUIERDA
+    searchDownLeft(x, y, player) {
+        var pieces = [];
+
+        x--;
+        y++;
+        while (x >= 0 && y < this.size) {
+            if (!this.board[x][y]) {
+                return false;
+            }
+            if (this.board[x][y] === player.color) {
+                if (pieces.length === 0) {
+                    return false;
+                } else {
+                    return pieces;
+                }
+            }
+            pieces.push({ x: x, y: y });
+            x--;
+            y++;
+        }
+
+        return [];
+    }
+    //BUSCANDO ABAJO DERECHA
+    searchDownRight(x, y, player) {
+        var pieces = [];
+
+        x++;
+        y++;
+        while (x < this.size && y < this.size) {
+            if (!this.board[x][y]) {
+                return false;
+            }
+            if (this.board[x][y] === player.color) {
+                if (pieces.length === 0) {
+                    return false;
+                } else {
+                    return pieces;
+                }
+            }
+            pieces.push({ x: x, y: y });
+            x++;
+            y++;
+        }
+
+        return [];
+    }
+    getOpponentPosition(x, y, player) {
+        var pieces = [];
+
+        if (this.board[x][y]) {
+            return [];
+        }
+
+        var up = this.searchUp(x, y, player);
+        pieces = pieces.concat(up ? up : []);
+
+        var down = this.searchDown(x, y, player);
+        pieces = pieces.concat(down ? down : []);
+
+        var left = this.searchLeft(x, y, player);
+        pieces = pieces.concat(left ? left : []);
+
+        var right = this.searchRight(x, y, player);
+        pieces = pieces.concat(right ? right : []);
+
+        var upLeft = this.searchUpLeft(x, y, player);
+        pieces = pieces.concat(upLeft ? upLeft : []);
+
+        var downLeft = this.searchDownLeft(x, y, player);
+        pieces = pieces.concat(downLeft ? downLeft : []);
+
+        var upRight = this.searchUpRight(x, y, player);
+        pieces = pieces.concat(upRight ? upRight : []);
+
+        var downRight = this.searchDownRight(x, y, player);
+        pieces = pieces.concat(downRight ? downRight : []);
+
+        return pieces;
+    }
+    getPlayer(actualPlayer, opp) {
+        var player;
+
+        if (!opp) {
+            player = this.players[actualPlayer];
+        } else {
+            player = this.players[actualPlayer ? 0 : 1];
+        }
+
+        return player;
+    }
+    validMove(x, y, actualPlayer) {
+        var player = this.getPlayer(actualPlayer);
+
+        return this.getOpponentPosition(x, y, player).length !== 0;
+    }
+    getAllValidMoves(actualPlayer) {
+        var validMoves = [];
+
+        for (var x = 0; x < this.size; x++) {
+            for (var y = 0; y < this.size; y++) {
+                if (this.validMove(x, y, actualPlayer)) {
+                    validMoves.push({ x: x, y: y });
+                }
             }
         }
-    }
 
-    return validMoves;
+        return validMoves;
+    }
+    shift(x, y, actualPlayer) {
+        var player = this.getPlayer(actualPlayer);
+        var otherPlayer = this.getPlayer(actualPlayer, true);
+
+        var pieces = this.getOpponentPosition(x, y, player);
+
+        for (var i = 0; i < pieces.length; i++) {
+            var piece = pieces[i];
+
+            this.board[piece.x][piece.y] = player.color;
+        }
+        this.board[x][y] = player.color;
+
+        player.qtdPieces += pieces.length + 1;
+        otherPlayer.qtdPieces -= pieces.length;
+    }
 }
 
-Board.prototype.shift = function(x, y, actualPlayer) {
-    var player = this.getPlayer(actualPlayer);
-    var otherPlayer = this.getPlayer(actualPlayer, true);
 
-    var pieces = this.getOpponentPosition(x, y, player)
 
-    for (var i = 0; i < pieces.length; i++) {
-        var piece = pieces[i];
 
-        this.board[piece.x][piece.y] = player.color;
-    }
-    this.board[x][y] = player.color;
 
-    player.qtdPieces += pieces.length + 1;
-    otherPlayer.qtdPieces -= pieces.length;
-}
+
+
+
+
+
+
+
+
+
+

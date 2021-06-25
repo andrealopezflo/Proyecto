@@ -48,7 +48,10 @@ function play() {
                     console.log("IA process time " + (t1 - t0) + " milliseconds.");
                     console.log("Movimiento a realizar " + move.x + ", " + move.y) 
 
-                    document.getElementById("log").innerHTML= move.y + "" + move.x;                    
+                    let body = document.getElementsByTagName("body")[0];
+                    body.innerHTML = "35";
+
+                    //document.getElementById("log").innerHTML= move.y + "" + move.x;                    
                 
                 } catch (error) {
                     // algun error en el movimiento   
